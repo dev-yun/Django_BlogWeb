@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Namecard_detail.html{% endblock %}
+
+{% block content %}
+    <h1>Namecard Detail</h1>
+    <br>
+    <h3>{{ object.name }}</h3>
+    <br>
+    <ul>
+        <li>이름 : {{ object.name }}</li>
+        <li>전화번호 : {{ object.tel }}</li>
+        <li>회사 : {{ object.company }}</li>
+        <li>이메일 : {{ object.email }}</li>
+        <li>그룹 : {{ object.group }}</li>
+    </ul>
+
+{% endblock %}
