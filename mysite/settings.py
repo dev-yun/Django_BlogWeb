@@ -139,3 +139,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 TAGGIT_CASE_INSENSITIVE = True
 TAGGIT_LIMIT = 50
+
+DISQUS_SHORTNAME = "djangoweb-2"
+DISQUS_MY_DOMAIN = 'http://127.0.0.1:8000'
