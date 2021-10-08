@@ -1,10 +1,12 @@
 from django.conf import settings
+from django.db.models import Q
 from django.shortcuts import render
 
 # Create your views here.
 from django.views.generic import ListView, DetailView, ArchiveIndexView, YearArchiveView, MonthArchiveView, \
-    DayArchiveView, TodayArchiveView, TemplateView
+    DayArchiveView, TodayArchiveView, TemplateView, FormView
 
+from blog.forms import PostSearchForm
 from blog.models import Post
 
 
@@ -69,3 +71,37 @@ class TaggedObjectLV(ListView):
         context = super().get_context_data(**kwargs)
         context['tagname'] = self.kwargs['tag']
         return context
+
+
+class SearchFormView(FormView):
+    form_class = PostSearchForm
+    template_name = 'blog/post_search.html'
+
+    def get(self, request, *args, **kwargs):
+        # Handle GET requests: instantiate a blank version of the form.
+        print("get get test")
+        context = super().get_context_data(**kwargs)
+
+        post_list = Post.objects.all()
+
+        # context['form'] = self.form_class
+        # context['search_term'] = searchWord
+        context['object_list'] = post_list
+
+        # return self.render_to_response(self.get_context_data())
+        return self.render_to_response(context)
+        # return render(self.request, self.template_name, context)
+
+    def form_valid(self, form):
+        print(form)
+        searchWord = form.cleaned_data['search_word']
+        print("post test")
+        post_list = Post.objects.filter(Q(title__icontains=searchWord) | Q(description__icontains=searchWord) | Q(
+            content__icontains=searchWord)).distinct()
+
+        context = {}
+        context['form'] = form
+        context['search_term'] = searchWord
+        context['object_list'] = post_list
+
+        return render(self.request, self.template_name, context)  # No Redirection
