@@ -2,6 +2,9 @@ from django.db import models
 
 
 # Create your models here.
+from django.urls import reverse
+
+
 class Namecard_TBL(models.Model):
     name = models.CharField('NAME', max_length=100, blank=False)
     tel = models.CharField('MOBILE', max_length=50, blank=False)
@@ -15,5 +18,10 @@ class Namecard_TBL(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('namecard:detail', kwargs={'pk': self.id})
+
     class Meta:
         ordering = ('group', 'name',)
+
+
