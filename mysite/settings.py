@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'student.apps.StudentConfig',
     'taggit.apps.TaggitAppConfig',
     'taggit_templatetags2',
+    'photo.apps.PhotoConfig',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Photo Search</h1>
+
+    <br>
+
+    <form action="." method="post"> {% csrf_token %}
+        {{ form.as_table }}
+        <input type="submit" value="Submit" class="btn btn-primary btn-sm">
+    </form>
+
+    <br/><br/>
+
+    {% if object_list %}
+        {% for photo in object_list %}
+            <h2><a href='{{ photo.get_absolute_url }}'>{{ photo.title }}</a></h2>
+            <h5>{{ photo.description }}</h5>
+        {% endfor %}
+    {% elif search_term %}
+        <b><i>Search Word ({{ search_term }}) Not Found !</i></b>
+    {% endif %}
+
+{% endblock %}
