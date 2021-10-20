@@ -42,14 +42,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'bookmark.apps.BookmarkConfig',
     'phone.apps.PhoneConfig',
     'blog.apps.BlogConfig',
     'namecard.apps.NamecardConfig',
     'student.apps.StudentConfig',
+    'photo.apps.PhotoConfig',
+
     'taggit.apps.TaggitAppConfig',
     'taggit_templatetags2',
-    'photo.apps.PhotoConfig',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +146,5 @@ TAGGIT_LIMIT = 50
 
 DISQUS_SHORTNAME = "djangoweb-2"
 DISQUS_MY_DOMAIN = 'http://127.0.0.1:8000'
+
+LOGIN_REDIRECT_URL = "/"
