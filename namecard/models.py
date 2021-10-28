@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -13,7 +14,7 @@ class Namecard_TBL(models.Model):
     group = models.CharField('Group', max_length=50, blank=True)
     creat_dt = models.DateTimeField('CREATE DATE', auto_now_add=True)
     modify_dt = models.DateTimeField('MODIFY DATE', auto_now=True)
-    birth_dt = models.DateTimeField('BIRTH DATE', auto_now=False)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.name

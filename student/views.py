@@ -1,9 +1,12 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render
 
 # Create your views here.
-from django.views.generic import ListView, DetailView, FormView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
 
+from mysite.views import OwnerOnlyMixin
 from student.forms import StudentSearchForm
 from student.models import Student
 
@@ -14,6 +17,34 @@ class StudentLV(ListView):
 
 class StudentDV(DetailView):
     model = Student
+
+
+class StudentCreateView(LoginRequiredMixin, CreateView):
+    model = Student
+    fields = ['name', 'univ', 'tel', 'group', 'studentnum']
+    success_url = reverse_lazy('student:index')
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+
+class StudentChangeLV(LoginRequiredMixin, ListView):
+    template_name = 'student/student_change_list.html'
+
+    def get_queryset(self):
+        return Student.objects.filter(owner=self.request.user)
+
+
+class StudentUpdateView(OwnerOnlyMixin, UpdateView):
+    model = Student
+    fields = ['name', 'univ', 'tel', 'group', 'studentnum']
+    success_url = reverse_lazy('student:index')
+
+
+class StudentDeleteView(OwnerOnlyMixin, DeleteView):
+    model = Student
+    success_url = reverse_lazy('student:index')
 
 
 class SearchFormView(FormView):
@@ -41,8 +72,8 @@ class SearchFormView(FormView):
         print("post test")
         student_list = Student.objects.filter(
             Q(name__icontains=searchWord) | Q(univ__icontains=searchWord)
-            | Q(tel__icontains=searchWord)| Q(group__icontains=searchWord)
-        | Q(studentnum__icontains=searchWord)).distinct()
+            | Q(tel__icontains=searchWord) | Q(group__icontains=searchWord)
+            | Q(studentnum__icontains=searchWord)).distinct()
 
         context = {}
         context['form'] = form

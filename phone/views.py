@@ -1,9 +1,12 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render
 
 # Create your views here.
-from django.views.generic import ListView, DetailView, FormView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
 
+from mysite.views import OwnerOnlyMixin
 from phone.forms import PhoneSearchForm
 from phone.models import Phone
 
@@ -14,6 +17,34 @@ class PhoneLV(ListView):
 
 class PhoneDV(DetailView):
     model = Phone
+
+
+class PhoneCreateView(LoginRequiredMixin, CreateView):
+    model = Phone
+    fields = ['name', 'phonenum']
+    success_url = reverse_lazy('phone:index')
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+
+class PhoneChangeLV(LoginRequiredMixin, ListView):
+    template_name = 'phone/phone_change_list.html'
+
+    def get_queryset(self):
+        return Phone.objects.filter(owner=self.request.user)
+
+
+class PhoneUpdateView(OwnerOnlyMixin, UpdateView):
+    model = Phone
+    fields = ['name', 'phonenum']
+    success_url = reverse_lazy('phone:index')
+
+
+class PhoneDeleteView(OwnerOnlyMixin, DeleteView):
+    model = Phone
+    success_url = reverse_lazy('phone:index')
 
 
 class SearchFormView(FormView):
