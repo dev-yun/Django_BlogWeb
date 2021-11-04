@@ -60,6 +60,9 @@
                     <a class="dropdown-item" href="{% url 'namecard:add' %}">Namecard</a>
                     <a class="dropdown-item" href="{% url 'phone:add' %}">Phone</a>
                     <a class="dropdown-item" href="{% url 'student:add' %}">Student</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'photo:album_add' %}">Album</a>
+                    <a class="dropdown-item" href="{% url 'photo:photo_add' %}">Photo</a>
                 </div>
             </li>
 
@@ -71,6 +74,9 @@
                     <a class="dropdown-item" href="{% url 'namecard:change' %}">Namecard</a>
                     <a class="dropdown-item" href="{% url 'phone:change' %}">Phone</a>
                     <a class="dropdown-item" href="{% url 'student:change' %}">Student</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'photo:album_change' %}">Album</a>
+                    <a class="dropdown-item" href="{% url 'photo:photo_change' %}">Photo</a>
                 </div>
             </li>
         </ul>
